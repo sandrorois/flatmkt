@@ -290,15 +290,13 @@ h4 {
     .hero h1 {
         font-family: dakdo regular;
         letter-spacing: 0.1rem;
-        font-size: 5rem;
+        font-size: 4.9rem;
         font-weight: 500;
         margin-bottom: 20px;
-        margin-left: -10px;
-    }
+        }
 
     .hero p {
         font-size: 1.1rem;
-        padding-left: 10px;
     }
 }
 
