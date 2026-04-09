@@ -28,6 +28,15 @@ window.addEventListener('scroll', animateOnScroll);
 window.addEventListener('load', animateOnScroll);
 
 
+// Rotação do detalhe SVG na section services conforme scroll
+const detalhe = document.getElementById('services-detalhe');
+if (detalhe) {
+    window.addEventListener('scroll', () => {
+        const rotation = window.scrollY * 0.15;
+        detalhe.style.transform = `translateY(-50%) rotate(${rotation}deg)`;
+    });
+}
+
 // Animação da seção IDEIAS
 function animateIdeasSection() {
     const ideas = document.querySelector('.ideas');
