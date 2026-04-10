@@ -1,66 +1,31 @@
-// Menu hambruger
+// Menu hamburger
 const menuToggle = document.getElementById("menu-toggle");
 const menu = document.getElementById("menu");
-
 menuToggle.addEventListener("click", () => {
     menu.classList.toggle("show");
+    menuToggle.classList.toggle("open");
 });
 
-
-
-//Animação OnScroll da Section Services 
-
-
-function animateOnScroll() {
-    const elements = document.querySelectorAll('.section-title, .service-item');
-    const windowHeight = window.innerHeight;
-
-    elements.forEach(el => {
-        const position = el.getBoundingClientRect().top;
-
-        if (position < windowHeight - 100) {
-            el.classList.add('animate');
-        }
-    });
-}
-
-window.addEventListener('scroll', animateOnScroll);
-window.addEventListener('load', animateOnScroll);
-
-
-// Rotação dos ícones detalhe-azul em cada service-item conforme scroll
+// Scroll animations
+const animatedEls = document.querySelectorAll('.section-title, .service-item');
 const serviceDetalhes = document.querySelectorAll('.service-detalhe');
-if (serviceDetalhes.length) {
-    window.addEventListener('scroll', () => {
-        const rotation = window.scrollY * 0.2;
-        serviceDetalhes.forEach(el => {
-            el.style.transform = `rotate(${rotation}deg)`;
-        });
-    });
-}
-
-// Rotação do detalhe SVG na section services conforme scroll
 const detalhe = document.getElementById('services-detalhe');
-if (detalhe) {
-    window.addEventListener('scroll', () => {
-        const rotation = window.scrollY * 0.15;
-        detalhe.style.transform = `translateY(-50%) rotate(${rotation}deg)`;
+const ideas = document.querySelector('.ideas');
+
+function onScroll() {
+    const wh = window.innerHeight;
+    const sy = window.scrollY;
+
+    animatedEls.forEach(el => {
+        if (el.getBoundingClientRect().top < wh - 100) el.classList.add('animate');
     });
+
+    if (ideas && ideas.getBoundingClientRect().top < wh - 400) ideas.classList.add('animate');
+
+    serviceDetalhes.forEach(el => el.style.transform = `rotate(${sy * 0.2}deg)`);
+
+    if (detalhe) detalhe.style.transform = `translateY(-50%) rotate(${sy * 0.15}deg)`;
 }
 
-// Animação da seção IDEIAS
-function animateIdeasSection() {
-    const ideas = document.querySelector('.ideas');
-    const windowHeight = window.innerHeight;
-
-    if (ideas) {
-        const position = ideas.getBoundingClientRect().top;
-
-        if (position < windowHeight - 400) {
-            ideas.classList.add('animate');
-        }
-    }
-}
-
-window.addEventListener('scroll', animateIdeasSection);
-window.addEventListener('load', animateIdeasSection);
+window.addEventListener('scroll', onScroll);
+window.addEventListener('load', onScroll);
