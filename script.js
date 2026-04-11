@@ -6,6 +6,14 @@ menuToggle.addEventListener("click", () => {
     menuToggle.classList.toggle("open");
 });
 
+// Fecha menu mobile ao clicar em um item
+menu.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+        menu.classList.remove("show");
+        menuToggle.classList.remove("open");
+    });
+});
+
 // Scroll animations
 const animatedEls = document.querySelectorAll('.section-title, .service-item');
 const serviceDetalhes = document.querySelectorAll('.service-detalhe');
