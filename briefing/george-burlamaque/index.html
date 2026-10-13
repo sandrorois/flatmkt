@@ -593,6 +593,7 @@
             </div>
           </section>
           <div class="actions">
+            <button type="button" id="saveDraft">Salvar e continuar depois</button>
             <button type="button" id="back">← Voltar</button
             ><button class="primary" type="button" id="next">
               Próxima etapa →
@@ -631,11 +632,13 @@
             form
               .querySelectorAll("textarea")
               .forEach((x) => (o[x.name] = x.value));
-            sessionStorage.setItem(key, JSON.stringify(o));
+            localStorage.setItem(key, JSON.stringify({ answers: o, step: index, savedAt: Date.now() }));
           } catch (e) {}
         }
         try {
-          const o = JSON.parse(sessionStorage.getItem(key) || "{}");
+          const draft = JSON.parse(localStorage.getItem(key) || "null");
+          const o = draft && draft.answers ? draft.answers : {};
+          if (draft && Number.isInteger(draft.step)) index = Math.min(4, Math.max(0, draft.step));
           form.querySelectorAll("textarea").forEach((x) => {
             if (typeof o[x.name] === "string") x.value = o[x.name];
           });
@@ -673,6 +676,17 @@
             save();
           }
         });
+        document.getElementById("saveDraft").onclick = () => {
+          try {
+            save();
+            if (!localStorage.getItem(key)) throw Error("Rascunho não armazenado");
+            msg.style.color = "#41e0fe";
+            msg.textContent = "Rascunho salvo neste navegador. Volte a este endereço no mesmo dispositivo para continuar."; 
+          } catch(e) {
+            msg.style.color = "#ff8585";
+            msg.textContent = "O navegador não permitiu salvar. Verifique as permissões e tente novamente.";
+          }
+        };
         back.onclick = () => {
           if (index) {
             index--;
@@ -700,7 +714,7 @@
             document.getElementById("progress").classList.add("hide");
             document.getElementById("done").classList.remove("hide");
             try {
-              sessionStorage.removeItem(key);
+              localStorage.removeItem(key);
             } catch (e) {}
           } catch (e) {
             msg.textContent =
